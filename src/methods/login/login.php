@@ -24,7 +24,18 @@ return function (App $app, $pdo)
                     return $response
                         ->withHeader('Content-Type', 'application/json')
                         ->withStatus(400);
-                        
+                }
+                if (empty($email)) {
+                    $response->getBody()->write(json_encode(['error' => 'O campo email é obrigatório']));
+                    return $response
+                        ->withHeader('Content-Type', 'application/json')
+                        ->withStatus(400);
+                }
+                if (empty($password)) {
+                    $response->getBody()->write(json_encode(['error' => 'O campo password é obrigatório']));
+                    return $response
+                        ->withHeader('Content-Type', 'application/json')
+                        ->withStatus(400);
                 }
     
                 $stmt = $pdo->prepare("SELECT idaccount FROM public.account WHERE company_name = :company_name");
@@ -44,10 +55,11 @@ return function (App $app, $pdo)
                 $stmt = $pdo->prepare("
                 SELECT iduser, name, password, is_enabled
                 FROM public.user
-                WHERE email = :email  AND idaccount = :idaccount
+                WHERE email = :email AND password = :password AND idaccount = :idaccount
                 ");
     
                 $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':password', $password);
                 $stmt->bindParam(':idaccount', $idaccount);
                 $stmt->execute();
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
