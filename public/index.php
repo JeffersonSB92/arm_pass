@@ -10,7 +10,7 @@ $app = AppFactory::create();
 $app->addRoutingMiddleware();
 $app->addErrorMiddleware(true, true, true);
 
-(require __DIR__ . '/../src/routes/user/user.php')($app, $pdo);
-(require __DIR__ . '/../src/methods/login/login.php')($app, $pdo);
+(require __DIR__ . '/../src/Routes/user/user.php')($app, $pdo);
+(require __DIR__ . '/../src/Routes/access/access.php')($app, $pdo);
 
 $app->run();
