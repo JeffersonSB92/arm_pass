@@ -13,5 +13,7 @@ return function (App $app, $pdo) {
         $userController = new UserController($tokenModel, $userModel);
 
         $group->get('/getAll', [$userController, 'getAll']);
+
+        $group->post('/create', [$userController, 'createUser']);
     });
 };
